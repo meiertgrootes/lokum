@@ -1,0 +1,27 @@
+FROM nlesc/lokum:latest
+
+WORKDIR /lokum
+
+RUN yes | rm -r emma
+
+RUN git clone https://github.com/meiertgrootes/emma.git && cd emma && git checkout eecolidargen2
+
+# install kubespray requirements
+#RUN pip2 install --upgrade pip && \
+#    pip2 uninstall ansible && \
+#    cd /lokum/inventory_builder && pip3 install -r requirements.txt && \
+#    pip2 install ansible-modules-hashivault && \
+#    cd /lokum
+
+# set environment variables
+ENV LOKUM_HOME /lokum
+ENV LOKUM_CONFIG /lokum/config
+#ENV ANSIBLE_LIBRARY /usr/lib/python2.7/site-packages/ansible/modules
+#ENV ANSIBLE_MODULE_UTILS /usr/lib/python2.7/site-packages/ansible/module_utils
+#export PATH=$PATH:/lokum/kubespray/library
+
+
+#COPY scripts/lokum-init.sh /usr/local/bin/
+#RUN ln -s usr/local/bin/lokum-init.sh / # back compatibility
+ENTRYPOINT ["lokum-init.sh"]
+CMD ["deploy"]
