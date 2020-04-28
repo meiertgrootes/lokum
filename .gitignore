@@ -1,13 +1,15 @@
 id_rsa_*
 terraform.tfstate*
-*.retry 
+*.retry
 .terraform
+
+config/variables.tf
 
 deployment/*
 Docker/inventory_builder/hosts.yaml
 
-*/terraform.tfstate* 
-*/*.retry 
+*/terraform.tfstate*
+*/*.retry
 */.terraform
 */id_rsa_*
 
