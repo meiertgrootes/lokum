@@ -3,4 +3,4 @@
 docker run --rm --net=host -it \
   -v $(pwd)/config:/lokum/config \
   -v $(pwd)/deployment:/lokum/deployment \
-  nlesc/mlokum:latest
+  nlesc/eecolokum:latest

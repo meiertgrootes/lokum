@@ -7,7 +7,7 @@ provider "opennebula" {
 }
 
 data "template_file" "lokum-template" {
-        template = "${file("opennebula_k8s.tpl")}"
+        template = "${file("eecolidargen2-opennebula_k8s.tpl")}"
 }
 
 resource "opennebula_template" "lokum-template" {
@@ -62,11 +62,11 @@ resource "null_resource" "lokumcluster" {
         }
 
         provisioner "local-exec" {
-                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' install_platform_light.yml --tags 'common,minio,hadoop,spark,dask' --skip-tags 'jupyterhub,pdal,geotrellis,cassandra,geomesa' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
+                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' install_platform_light.yml --tags 'common,pdal' --skip-tags 'jupyterhub,minio,hadoop,spark,dask,geotrellis,cassandra,geomesa,puregdal,purepdal' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
         }
 
         provisioner "local-exec" {
-                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' start_platform.yml --skip-tags 'jupyterhub,cassandra' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
+                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' start_platform.yml --skip-tags 'jupyterhub,cassandra,dask,spark,minio,hadoop' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
         }
 }
 
@@ -77,4 +77,3 @@ output "lokum-node-vm_id" {
 output "lokum-node-vm_ip" {
         value = "${opennebula_vm.lokum-node.*.ip}"
 }
-
