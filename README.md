@@ -15,6 +15,8 @@ This repository includes scripts to deploy a cluster with GlusterFS, Docker, Spa
 
 Lokum uses [emma](https://github.com/nlesc-sherlock/emma) ansible playbooks to deploy services.
 
+In this `eecolidar-lokum` branch we have adapted and expanded the scripts and playbooks to set-up a cluster specific to the needs of the eEcoLiDAR project. Specific instructions to this end can be found below, after the general Lokum instructions.
+
 ## Technologies & Tools
 
 - [Terraform Client](https://www.terraform.io)
@@ -93,3 +95,40 @@ DEPLOYMENT_DIR=/lokum/deployment/cluster0; ANSIBLE_HOST_KEY_CHECKING=False; expo
 To check Apache Spark open the link below in a browser:
 http://NODE_1_IP:8080/
 
+# eEcoLiDAR-lokum
+
+Lokum, as described above, uses `emma` ansible playbooks to deploy software stacks and services to the cluster VMs. To meet the needs of the eEcoLiDAR project we have also forked and expanded the `emma` repository. In the following we make use of the fork located here [emma](https://github.com/meiertgrootes/lokum).
+
+In order to build the eEcolidar cluster please proceed as follows. This includes preparatory steps to be taken on the [SURFsara OpenNebula UI](https://ui.hpccloud.surfsara.nl)(TODO!) (a user account is required). In the following we assume the user to be a member of the eecolidar group.
+
+## Preparatory steps
+TODO
+
+## Build Docker image
+(Install Docker on your system)
+Clone the repository to your local system and `cd` to the cloned repository. The run the following command
+```bash
+cd Docker && ./buildeeco.#!/bin/sh
+```
+this will build the `nlesc/lokumeeco` image. This image is based off the `nlesc/lokum` image, but replaces the [emma](https://github.com/meiertgrootes/lokum) repository with the required fork.
+
+## Edit variables (and template)
+Next `cd` back to the `config` folder of the cloned repository.
+``` bash
+cd ../config/
+```
+
+There, edit the `variables.tf.example` file, filling in your user credentials and the number of nodes, and save this file as `variables.tf`.
+
+If desired you can edit the VM template. However, the `eecolidargen2-opennebula_k8s.tpl` should be suitable for the eEcolidar cluster. The `main.tf` file contains the instructions `Terraform` uses to initialize the VMs and provision them using the emma ansible playbooks. In contrast to the `lokum/master` branch, we make use of the `install_platform_eecolidar.yml` playbook, which installs common requirements, GDAL and PDAL (with associated python bindings) and the lcMacroPipeline stack.
+
+## Deploy cluster
+`cd` back to the main repository folder.
+There run
+```bash
+./deployCluster.sh
+```
+which will create and run the Docker container and set up and provision the cluster. An initial confirmation query will be issued which must be confirmed by entering `yes`. Simply follow the instructions. Total set up requires ca. 25 minutes. On completion the IPs of the VMs will be returned. These can also be inspected using the OpenNebula UI.
+The machines can then be accessed as described in the general instructions above.
+
+Please be aware that the set-up sometimes fails as the VMs can't be found. They are, in most cases, however, up and running. They should then be terminated in the Opennebula UI and the `lokum-template` which was created should be deleted. optionally the `deployment` folder which was created can be deleted. If not, subsequent deployment attempts will increment the cluster counter.
