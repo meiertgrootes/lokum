@@ -108,7 +108,7 @@ TODO
 (Install Docker on your system)
 Clone the repository to your local system and `cd` to the cloned repository. The run the following command
 ```bash
-cd Docker && ./buildeeco.#!/bin/sh
+cd Docker && ./buildeeco.sh
 ```
 this will build the `nlesc/lokumeeco` image. This image is based off the `nlesc/lokum` image, but replaces the [emma](https://github.com/meiertgrootes/lokum) repository with the required fork.
 
