@@ -58,11 +58,11 @@ resource "null_resource" "lokumcluster" {
         }
 
         provisioner "local-exec" {
-                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml -e datadisk=/dev/vdb -e host_name=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu prepcloud-playbook.yml --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
+                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml -e datadisk=/dev/vdb -e host_name=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu prepcloud-playbook_wsystemctl.yml --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
         }
 
         provisioner "local-exec" {
-                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' install_platform_eecolidar.yml --tags 'common,lcmacropipeline' --skip-tags 'dask' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
+                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' install_platform_eecolidar.yml --tags 'lcmacropipeline' --skip-tags 'dask' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
         }
 
         provisioner "local-exec" {
