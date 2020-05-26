@@ -21,7 +21,8 @@ ENV LOKUM_CONFIG /lokum/config
 #export PATH=$PATH:/lokum/kubespray/library
 
 
-#COPY scripts/lokum-init.sh /usr/local/bin/
-#RUN ln -s usr/local/bin/lokum-init.sh / # back compatibility
-ENTRYPOINT ["lokum-init.sh"]
+
+COPY scripts/lokum-init-eeco.sh /usr/local/bin/
+RUN ln -s usr/local/bin/lokum-init-eeco.sh / # back compatibility
+ENTRYPOINT ["lokum-init-eeco.sh"]
 CMD ["deploy"]
