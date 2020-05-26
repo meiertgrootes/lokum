@@ -62,12 +62,12 @@ resource "null_resource" "lokumcluster" {
         }
 
         provisioner "local-exec" {
-                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' install_platform_eecolidar.yml --tags 'lcmacropipeline' --skip-tags 'dask' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
+                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' install_platform_eecolidar.yml --tags 'laserfarm' --skip-tags 'dask' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
         }
 
-        provisioner "local-exec" {
-                command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' start_platform.yml --skip-tags 'jupyterhub,cassandra,dask,spark,minio,hadoop' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
-        }
+        #provisioner "local-exec" {
+        #        command = "sleep 30; ANSIBLE_HOST_KEY_CHECKING=False; export CLUSTER_NAME=lokum; cd /lokum/emma/vars; sh ./create_vars_files.sh; cd /lokum/emma; ansible-playbook -i ${var.DEPLOY_FOLDER}/hosts.yaml --extra-vars 'CLUSTER_NAME=lokum' start_platform.yml --skip-tags 'jupyterhub,cassandra,dask,spark,minio,hadoop' --private-key=${var.DEPLOY_FOLDER}/id_rsa_lokum_ubuntu.key -v"
+        #}
 }
 
 output "lokum-node-vm_id" {
